@@ -1,0 +1,11 @@
+Estrutura basica e operadores
+- Sintaxe basica
+- Identação
+- Tipos de dados primitivos
+- Impacto da tipagem dinamica # 14/11/24
+- Tabela resumo: boas praticas 
+- operadores arimetricos
+- input
+- capturando dados numericos 
+- processando os dados inseridos
+- estruturas de controle
