@@ -2,11 +2,11 @@
 Utilize um conjunto de dados com variáveis meteorológicas (umidade, pressão atmosférica, velocidade do vento, 
 índice de radiação solar e temperatura)  para prever a temperatura média diária utilizando o algoritmo K-Nearest Neighbors (KNN).
 """
+#bibliotecas utilizadas
+from sklearn.neighbors import KNeighborsRegressor #Biblioteca para criar modelo de regressão KNN
+import numpy as np #utilizar arrays
 
-from sklearn.neighbors import KNeighborsRegressor
-import numpy as np
-
-#dados
+#dados [umidade, pressão atmosferica, velocidade do vento, indice de radiação solar, temperatura]
 dados = np.array([
     [65, 1015, 12, 300, 22],
     [70, 1012, 14, 320, 23],
@@ -17,13 +17,17 @@ dados = np.array([
     [95, 1001, 24, 420, 28]
 ])
 
-x = dados[:, :-1]
-y = dados[:, -1]
+#selecionando os dados 
+x = dados[:, :-1] #umidade, pressão, vel_vento, rad.solar
+y = dados[:, -1] #temperatura (alvo)
 
-modelo = KNeighborsRegressor(n_neighbors=3)
-modelo.fit(x, y)
+#criando e treinando o modelo
+modelo = KNeighborsRegressor(n_neighbors=3) # Criado modelo de regressão K-Nearest Neighbors com 3 vizinhos.
+modelo.fit(x, y) #treinando o modelo com as caracteristicas x e y
 
-novos_dados = np.array([[85, 1004, 19, 370]])
-previsao_temperatura = modelo.predict(novos_dados)
+#inserindo novos dados e a previsão
+novos_dados = np.array([[85, 1004, 19, 370]]) #novo array de dados
+previsao_temperatura = modelo.predict(novos_dados) #previsão da temperatura com base no novo array
 
+#resultado
 print(f'A temperatura média diaria prevista: {previsao_temperatura[0]:.2f} °C')
