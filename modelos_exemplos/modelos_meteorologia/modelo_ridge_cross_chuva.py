@@ -4,7 +4,7 @@ Utilize um conjunto de dados com variáveis meteorológicas
 Aplique regressão de Ridge com validação cruzada para selecionar o melhor parâmetro de regularização.
 
 """
-
+#Importação das bibliotecas
 from sklearn.linear_model import RidgeCV #Utilizando a regressão Ridge com validação cruzada para prever a quantidade de chuva com base em variáveis meteorológicas
 import numpy as np
 
@@ -20,7 +20,7 @@ dados = np.array([[22, 65, 1015, 12, 5],
 
 #seleção dos dados
 x = dados[:, :-1] #temp, umd, pressão, vel.vento
-y = dados[:, -1] #precipitação
+y = dados[:, -1] #precipitação (alvo)
 
 #criação e treinamento
 alphas = np.logspace(-6, 6, 13) #Cria uma sequência de valores de alpha (parâmetro de regularização) em uma escala logarítmica 10^-6 a 10^6

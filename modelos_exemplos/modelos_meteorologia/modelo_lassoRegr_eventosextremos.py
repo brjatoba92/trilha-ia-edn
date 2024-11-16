@@ -4,10 +4,11 @@ velocidade do vento, precipitação) para prever eventos extremos de temperatura
 Aplique regressão de Lasso para selecionar as características mais importantes.
 """
 
-from sklearn.linear_model import LassoCV
-import numpy as np
+#Bibliotecas utilizadas
+from sklearn.linear_model import LassoCV #Regressão de Lasso para validação cruzada
+import numpy as np #Arrays
 
-#dados [temperatura, umidade, pressão atm, velocidade do vento, precipitação, eventos extremos]
+#Dados [temperatura, umidade, pressão atm, velocidade do vento, precipitação, eventos extremos]
 dados = np.array([
     [22, 65, 1015, 12, 5, 1],
     [23, 70, 1012, 14, 7, 0],
@@ -18,13 +19,17 @@ dados = np.array([
     [28, 95, 1001, 24, 20, 1]
 ])
 
-x = dados[:, :-1] #temp, umd, pres, vel.vento, precip
-y = dados[:, -1] #eventos extremos
+#Seleção de dados
+x = dados[:, :-1] #temp, umd, pres, vel.vento, precip (seleção de todas as colunas, exceto a ultima)
+y = dados[:, -1] #eventos extremos (alvo) (seleção da ultima coluna)
 
-modelo = LassoCV(cv=5)
-modelo.fit(x, y)
+#Criação e treinamento do modelo
+modelo = LassoCV(cv=5) #Modelo criado (Cria um modelo de regressão Lasso com validação cruzada (5-fold cross-validation)
+modelo.fit(x, y) #Modelo treinando com as caracteristicas x e y
 
-novos_dados = np.array([[25, 82, 1006, 19, 8]])
-previsao_evento_extremo = modelo.predict(novos_dados)
+#Inserindo novos dados e previsão
+novos_dados = np.array([[25, 82, 1006, 19, 8]]) #Array novo (temp, umd, pres, vel.vento e precip)
+previsao_evento_extremo = modelo.predict(novos_dados) #Previsão da probabilidade de eventos extremos com base nos novos dados
 
+#Resultado
 print(f'Probablidade de evento extremos prevista: {previsao_evento_extremo[0]:.2f}')
