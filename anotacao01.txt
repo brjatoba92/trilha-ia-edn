@@ -9,3 +9,7 @@ Estrutura basica e operadores
 - capturando dados numericos 
 - processando os dados inseridos
 - estruturas de controle
+
+Aula 18/11/2024
+- Revisão
+- Estruturas de repetição e tratativas de erros
