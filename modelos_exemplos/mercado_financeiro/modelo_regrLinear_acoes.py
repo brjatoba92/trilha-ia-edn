@@ -13,34 +13,44 @@ Utilize numpy para manipulação dos dados.
 Crie e treine um modelo de regressão linear com sklearn.
 Avalie a precisão do modelo e faça previsões.
 """
-
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as plt
+#Carregando as bibliotecas
+import numpy as np #arrays
+import pandas as pd #carregar e manipular de dados
+from sklearn.model_selection import train_test_split #divisão dos dados em conjuntos de treino e teste
+from sklearn.linear_model import LinearRegression #criação do modelo de regerssão linear
+import matplotlib.pyplot as plt #criação e manipulação de dados
 
 #carregando os dados
-dados = pd.read_csv('historical_stock_prices2.csv')
+dados = pd.read_csv('Dados Históricos_Ibovespa_2004_2024.csv') #carregando o arquivo csv
 
+#Preparação dos dados
+x = np.array(dados.index).reshape(-1, 1) #conversão dos dados para um array e reformatado para um array bidimensional
+y = dados['Close'].values #seleção da coluna dos valores de fechamento das ações
 
-x = np.array(dados.index).reshape(-1, 1)
-y = dados['Close'].values
+#separa os dados em conjuntos de treinamento (80%) e teste (20%) com esta divisão sendo replicavel
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42) 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+#Criação e treinamento do modelo
+modelo = LinearRegression() #criação do modelo
+modelo.fit(x_train, y_train) #treinamento com o conjunto de dados 
 
-modelo = LinearRegression()
-modelo.fit(x_train, y_train)
+#Previsão
+y_pred = modelo.predict(x_test) #Usa o modelo treinado para prever os valores das ações no conjunto de teste 
 
-y_pred = modelo.predict(x_test)
+#Visualização dos resultados
+plt.scatter(x_test, y_test, color='black') #Plota os dados reais na forma de grafico de dispersão
+plt.plot(x_test, y_pred, color='blue', linewidth=3) #Plota a previsão do modelo (linha azul)
 
-plt.scatter(x_test, y_test, color='black')
-plt.plot(x_test, y_pred, color='blue', linewidth=3)
-plt.xlabel('Índice')
-plt.ylabel('Preço de Fechamento') 
-plt.title('Previsão de Preços de Ações')
-plt.show()
+"""
+índices dos dados do conjunto de teste. Essencialmente, cada ponto ao longo do eixo x corresponde a um índice no DataFrame original 
+que foi utilizado para dividir os dados em treinamento e teste. 
+"""
+plt.xlabel('Índice') #eixo x com o parametro inidice
 
-# Salvar o gráfico
+plt.ylabel('Preço de Fechamento') #eixo y
+plt.title('Previsão de Preços de Ações') #Titulo
+plt.show() #mostra a figura
+
+# Salvar o gráfico em uma imagem
 plt.savefig('previsao_acoes.png', dpi=300, bbox_inches='tight')
 

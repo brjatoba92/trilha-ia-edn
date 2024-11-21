@@ -1,0 +1,59 @@
+Métricas por Classe
+
+
+1. Class 0 (Negativo para diabetes):
+
+1.1 Precision (Precisão): 0.81
+A precisão é a proporção de verdadeiros positivos sobre o total de previsões positivas. Para a Classe 0, 81% das previsões foram corretas.
+
+1.2 Recall (Revocação): 0.80
+A revocação é a proporção de verdadeiros positivos sobre o total de exemplos reais positivos. Para a Classe 0, o modelo identificou corretamente 80% dos casos.
+
+1.3 F1-Score: 0.81
+O F1-Score é a média harmônica entre precisão e revocação, proporcionando uma medida balanceada. Para a Classe 0, o F1-Score é 0.81.
+
+1.4 Support (Apoio): 99
+O suporte indica o número de ocorrências reais da Classe 0 no conjunto de teste.
+
+
+2. Class 1 (Positivo para diabetes):
+
+2.1 Precision (Precisão): 0.65
+A precisão para a Classe 1 é 65%, indicando que 65% das previsões foram corretas.
+
+2.2 Recall (Revocação): 0.67
+A revocação para a Classe 1 é 67%, indicando que o modelo identificou corretamente 67% dos casos.
+
+2.3 F1-Score: 0.66
+O F1-Score para a Classe 1 é 0.66, indicando um equilíbrio entre precisão e revocação.
+
+2.4 Support (Apoio): 55
+O suporte para a Classe 1 é 55, indicando o número de ocorrências reais da Classe 1 no conjunto de teste.
+
+
+3. Métricas Gerais
+
+Accuracy (Acurácia): 0.75
+A acurácia é a proporção de previsões corretas sobre o total de previsões. Neste caso, o modelo acertou 75% das previsões.
+
+
+4. Macro Avg (Média Macro):
+4.1 Precision (Precisão): 0.73
+4.2 Recall (Revocação): 0.74
+4.3 F1-Score: 0.73
+A média macro calcula a média de precisão, revocação e F1-Score para todas as classes, tratando todas as classes igualmente.
+
+
+5. Weighted Avg (Média Ponderada):
+
+5.1 Precision (Precisão): 0.76
+5.2 Recall (Revocação): 0.75
+5.3 F1-Score: 0.75
+A média ponderada calcula a média de precisão, revocação e F1-Score para todas as classes, ponderando cada uma pelo número de instâncias de suporte.
+
+
+Conclusão
+Classe 0 (Negativo para diabetes): O modelo tem um desempenho melhor em identificar corretamente os negativos, com uma alta precisão e revocação.
+Classe 1 (Positivo para diabetes): O desempenho do modelo é moderado para identificar os positivos, com uma precisão e revocação mais baixas em comparação com a Classe 0.
+
+Desempenho Geral: A acurácia do modelo é 75%, indicando que ele é razoavelmente eficaz, mas há espaço para melhorias, especialmente no aumento da precisão e revocação para a Classe 1.
