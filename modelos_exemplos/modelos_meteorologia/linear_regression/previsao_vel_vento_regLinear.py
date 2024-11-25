@@ -17,7 +17,7 @@ Avaliar o desempenho do modelo usando métricas de regressão.
 
 Visualizar os resultados com gráficos.
 """
-
+#Importação das bibliotecas
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -82,8 +82,8 @@ for real, pred in zip(y_test, y_pred):
 #plt.figure(figsize=(10,6))
 plt.scatter(y_test, y_pred, color='blue')
 plt.xlabel('Velocidade do Vento Real (m/s)')
-plt.ylabel('Velocidad do Vneto Prevista (m/s)')
-plt.title('Velocidade do Vneto Real vs Prevista')
+plt.ylabel('Velocidade do Vento Prevista (m/s)')
+plt.title('Velocidade do Vento Real vs Prevista')
 plt.text(0.05, 0.95, f'MSE: {mse:.2f}\nR²: {r2:.2f}', transform=plt.gca().transAxes, fontsize=12, verticalalignment='top')
 #plt.legend(['Previsão Maior que Real', 'Previsão Menor que Real'], loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
 plt.savefig('wind_speed_prediction.png')
