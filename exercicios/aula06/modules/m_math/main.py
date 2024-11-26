@@ -1,3 +1,3 @@
-import matematica as math
+import matematica as sexta
 
-print(math.dividir(5,3))
+print(sexta.multiplicar(5,3))

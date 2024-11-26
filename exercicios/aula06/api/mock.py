@@ -1,6 +1,7 @@
 import json
 
-response = '{"nome": "Picachu", "tipo": "Eletrico"}'
+response = '{"nome": "Marcos", "cidade": "Sete Lagoas", "idade": "30"}'
 
 dados = json.loads(response)
-print(dados['tipo'])
+
+print(dados['idade'])
