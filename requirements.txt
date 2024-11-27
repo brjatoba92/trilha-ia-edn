@@ -8,3 +8,4 @@ requests
 xgboost
 tensorflow
 seaborn
+yfinance
