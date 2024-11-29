@@ -1,4 +1,4 @@
-Data Medicao,pressao_atmosferica,temperatura,umidade,velocidade_vento,
+Data Medicao,p_atm,temp,umid,vel_vento,
 2003-02-17,null,null,null,null,
 2003-02-18,null,null,78.2,null,
 2003-02-19,1008.7,27.4,80.6,2.4,
