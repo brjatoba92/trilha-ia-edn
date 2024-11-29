@@ -48,13 +48,13 @@ class MeteorologicalModels:
                 print(f'{coluna}: {percentual:.2f}%')
 
             # Visualização dos dados faltantes
-            plt.figure(figsize=(10, 6))
+            #plt.figure(figsize=(12, 10))
             missing_percentual.plot(kind='bar')
             plt.title('Percentual de Dados Faltantes por Coluna')
             plt.xlabel('Colunas')
             plt.ylabel('Percentual')
             plt.savefig('dados_faltantes.png')
-            plt.show()
+            #plt.show()
         else:
             print("Nenhum dado faltante encontrado")
 
@@ -94,8 +94,8 @@ class MeteorologicalModels:
         com tratamento de dados faltantes
         """
         # Preparação dos dados
-        features = ['umidade', 'pressao_atmosferica', 'velocidade_vento']
-        target = 'temperatura'
+        features = ['umid', 'p_atm', 'vel_vento']
+        target = 'temp'
 
         # Verificação de dados faltantes no target
         if self.data[target].isnull().sum() > 0:
@@ -149,13 +149,14 @@ class MeteorologicalModels:
             }
 
         # Visualização dos resultados
-        plt.figure(figsize=(10, 6))
+        #plt.figure(figsize=(10, 6))
         plt.title(f'Comparação de Modelos de Regressão (Imputação {estrategia_imputer})')
         plt.bar(resultados.keys(), [r['R2'] for r in resultados.values()])
         plt.ylabel('Coeficiente R²')
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.show()
+        plt.savefig(f'resultados_{estrategia_imputer}.png')
+        #plt.show()
 
         return resultados
 
