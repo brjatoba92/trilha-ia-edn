@@ -1,0 +1,12 @@
+Modelo: Rede Neural Multilayer Perceptron
+Acuracia: 0.9
+
+Relatório de Classificação:
+              precision    recall  f1-score   support
+
+           0       0.93      0.90      0.92       124
+           1       0.85      0.89      0.87        76
+
+    accuracy                           0.90       200
+   macro avg       0.89      0.90      0.89       200
+weighted avg       0.90      0.90      0.90       200

@@ -1,0 +1,12 @@
+Modelo: Suport Vector Machine
+Acuracia: 0.845
+
+Relatório de Classificação:
+              precision    recall  f1-score   support
+
+           0       0.87      0.89      0.88       124
+           1       0.81      0.78      0.79        76
+
+    accuracy                           0.84       200
+   macro avg       0.84      0.83      0.83       200
+weighted avg       0.84      0.84      0.84       200
