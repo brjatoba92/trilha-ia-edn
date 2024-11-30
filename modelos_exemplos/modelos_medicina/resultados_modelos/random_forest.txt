@@ -1,0 +1,12 @@
+Modelo: Random Forest
+Acuracia: 0.98
+
+Relatório de Classificação:
+              precision    recall  f1-score   support
+
+           0       0.99      0.98      0.98       124
+           1       0.96      0.99      0.97        76
+
+    accuracy                           0.98       200
+   macro avg       0.98      0.98      0.98       200
+weighted avg       0.98      0.98      0.98       200
