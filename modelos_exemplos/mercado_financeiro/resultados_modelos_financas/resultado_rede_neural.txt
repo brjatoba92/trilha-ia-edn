@@ -1,0 +1,1 @@
+Erro Quadrático Médio (Rede Neural): 0.0005272541893827422
