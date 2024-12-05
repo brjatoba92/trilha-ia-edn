@@ -91,6 +91,31 @@ def modelo_resultado_jogo():
     return metricas
 
 #Modelo 2 - Regressão - Prever Numeros de Gols
+def modelo_numero_gols():
+    np.random.seed(42)
+    n_amostras = 1000
+    #Caracteristicas: Historico de Gols, Força do ataque, defesa
+    X = np.random.rand(n_amostras, 4)
+    y = 2 * X[:,0] + 1.5 * X[:, 1] + np.random.normal(0,0.5, n_amostras)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    modelo = RandomForestRegressor(n_estimators=100)
+    modelo.fit(X_train_scaled, y_train)
+
+    predicoes = modelo.predict(X_test_scaled)
+
+    metricas = {
+        'MSE': mean_squared_error(y_test, predicoes),
+        'R2': r2_score(y_test, predicoes)
+    }
+
+    salvar_resultados(modelo, 'numero_gols', X_test, y_test, predicoes, metricas, tipo='regressao')
+    return metricas
 
 #Modelo 3 - Classificação - Prever Cartão Vermelho
 
