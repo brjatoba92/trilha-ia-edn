@@ -1,0 +1,4 @@
+Modelo: valor_mercado
+metricas de Desempemho:
+MSE: 2470231176.5439925
+R2: 0.6894423012696844

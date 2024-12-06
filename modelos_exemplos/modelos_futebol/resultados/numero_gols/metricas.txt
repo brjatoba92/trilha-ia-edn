@@ -1,0 +1,4 @@
+Modelo: numero_gols
+metricas de Desempemho:
+MSE: 0.2920789143279513
+R2: 0.632798110789603
