@@ -56,12 +56,12 @@ def salvar_resultados(modelo, nome_modelo, x_test, y_test, predicoes, metricas, 
 
 #Modelo 1 - Classificação - Prever Resultado do Jogo
 """
-Classificação usando Random Forest
-Prevê o resultado do jogo (derrota, empate, vitória)
-Usa características como posse de bola e desempenho
+- Classificação usando Random Forest
+- Prevê o resultado do jogo (derrota, empate, vitória)
+- Usa características como posse de bola e desempenho
 """
 def modelo_resultado_jogo():
-    #Dados simualdos
+    #Dados simulados
     np.random.seed(42)
     n_amostras = 1000
     
@@ -72,55 +72,135 @@ def modelo_resultado_jogo():
 
     #Separação em conjuntos de treino e teste
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    modelo = RandomForestClassifier(n_estimators=100)
-    modelo.fit(X_train_scaled, y_train)
-
-    predicoes = modelo.predict(X_test_scaled)
-
-    metricas = {
-        'Acuracia': accuracy_score(y_test, predicoes),
-        'Relatorio de Classificação': classification_report(y_test, predicoes)
-    }
-
-    salvar_resultados(modelo, 'resultado_jogo', X_test, y_test, predicoes, metricas)
-    return metricas
-
-#Modelo 2 - Regressão - Prever Numeros de Gols
-def modelo_numero_gols():
-    np.random.seed(42)
-    n_amostras = 1000
-    #Caracteristicas: Historico de Gols, Força do ataque, defesa
-    X = np.random.rand(n_amostras, 4)
-    y = 2 * X[:,0] + 1.5 * X[:, 1] + np.random.normal(0,0.5, n_amostras)
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-
+    
+    #Escalonamento dos dados
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     
+    #Criação do modelo e treino
+    modelo = RandomForestClassifier(n_estimators=100)
+    modelo.fit(X_train_scaled, y_train)
+    
+    #Previsão
+    predicoes = modelo.predict(X_test_scaled)
+    #Metricas
+    metricas = {
+        'Acuracia': accuracy_score(y_test, predicoes),
+        'Relatorio de Classificação': classification_report(y_test, predicoes)
+    }
+    #Salvando os dados
+    salvar_resultados(modelo, 'resultado_jogo', X_test, y_test, predicoes, metricas)
+    return metricas
+
+#Modelo 2 - Regressão - Prever Numeros de Gols
+"""
+- Regressão usando Random Forest Regressor
+- Prevê o número de gols em uma partida
+- Considera características como força de ataque e defesa
+"""
+def modelo_numero_gols():
+    #Dados simulados
+    np.random.seed(42)
+    n_amostras = 1000
+    
+    #Caracteristicas: Historico de Gols, Força do ataque, defesa
+    X = np.random.rand(n_amostras, 4)
+    y = 2 * X[:,0] + 1.5 * X[:, 1] + np.random.normal(0,0.5, n_amostras)
+    
+    #Conjuntos de treino e de teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
+    #Escalonamento
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    #Criação do modelo e treino
     modelo = RandomForestRegressor(n_estimators=100)
     modelo.fit(X_train_scaled, y_train)
-
+    
+    #Previsão
     predicoes = modelo.predict(X_test_scaled)
-
+    
+    #Metricas
     metricas = {
         'MSE': mean_squared_error(y_test, predicoes),
         'R2': r2_score(y_test, predicoes)
     }
-
+    #Salvando os dados
     salvar_resultados(modelo, 'numero_gols', X_test, y_test, predicoes, metricas, tipo='regressao')
     return metricas
 
 #Modelo 3 - Classificação - Prever Cartão Vermelho
+"""
+- Classificação usando Support Vector Machine
+- Prevê a probabilidade de um jogador receber cartão vermelho
+- Analisa características como histórico de faltas
+"""
+def modelo_cartao_vermelho():
+    #Dados simulados
+    np.random.seed(42)
+    n_amostras = 1000
 
-#Modelo 4 - Regressão -Prever valor de mercado do jogador
+    #Caracteristicas: agressividade, historico de faltas
+    X = np.random.rand(n_amostras, 3)
+    y = (X[:, 0] > 0.7).atype(int) #Probabilidade de cartão vermelho
+    
+    #Conjuntos de treino e de teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
+    #Escalonamento dos dados
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    
+    #Criação do modelo e treino
+    modelo = SVC(kernel='rbf')
+    modelo.fit(X_train_scaled, y_train)
+    
+    #Previsão
+    predicoes = modelo.predict(X_test_scaled)
 
-#Modelo 5 - Classificação - Prever Time Campeão
+    #Metricas
+    metricas = {
+        'Acuracia': accuracy_score(y_test, predicoes),
+        'Relatorio de Classificação': classification_report(y_test, predicoes)
+    }
+    #Salvando os dados
+    salvar_resultados(modelo, 'cartao_vermelho', X_test, y_test, predicoes, metricas)
+    return metricas
+
+#Modelo 4 - Modelo Regressão - Prever valor de mercado do jogador
+
+"""
+Regressão usando Linear Regression
+Estima o valor de mercado de um jogador
+Considera idade, gols, assistências e tempo de jogo
+"""
+#Dados simulados
+#Caracteristicas
+#Conjuntos de treino e de teste
+#Escalonamento dos dados
+#Criação do modelo e treino
+#Previsão
+#Metricas
+#Salvando os dados
+
+
+#Modelo 5 - Modelo Classificação - Prever Time Campeão
+"""
+Classificação usando Logistic Regression
+Prevê a probabilidade de um time ser campeão
+Usa características como orçamento e histórico de títulos
+"""
+#Dados simulados
+#Caracteristicas
+#Conjuntos de treino e de teste
+#Escalonamento dos dados
+#Criação do modelo e treino
+#Previsão
+#Metricas
+#Salvando os dados
 
 #Executar todos os modelos
