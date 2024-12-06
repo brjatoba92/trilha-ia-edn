@@ -185,8 +185,8 @@ def valor_mercado_jogador():
     n_amostras = 1000
     
     #Caracteristicas
-    X = np.random.rand(n_amostras, 3)
-    y = (X[:, 0] > 0.7).atype(int)
+    X = np.random.rand(n_amostras, 4)
+    y = 50000 + 200000 * X[:,0] + 150000 * X[:, 1] + np.random.normal(0,50000,n_amostras)
 
     #Conjuntos de treino e de teste
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -197,7 +197,7 @@ def valor_mercado_jogador():
     X_test_scaled = scaler.transform(X_test)
     
     #Criação do modelo e treino
-    modelo = LogisticRegression()
+    modelo = LinearRegression()
     modelo.fit(X_train_scaled, y_train)
     
     #Previsão
@@ -205,11 +205,11 @@ def valor_mercado_jogador():
     
     #Metricas
     metricas = {
-        'Acuracia': accuracy_score(y_test, predicoes),
-        'Relatorio de Classificação': classification_report(y_test, predicoes)
+        'MSE': mean_squared_error(y_test, predicoes),
+        'R2': r2_score(y_test, predicoes)
     }
     #Salvando os dados
-    salvar_resultados(modelo, 'campeão', X_test, y_test, predicoes, metricas)
+    salvar_resultados(modelo, 'valor_mercado', X_test, y_test, predicoes, metricas)
 
 #Modelo 5 - Modelo Classificação - Prever Time Campeão
 """
@@ -217,13 +217,31 @@ Classificação usando Logistic Regression
 Prevê a probabilidade de um time ser campeão
 Usa características como orçamento e histórico de títulos
 """
-#Dados simulados
-#Caracteristicas
-#Conjuntos de treino e de teste
-#Escalonamento dos dados
-#Criação do modelo e treino
-#Previsão
-#Metricas
-#Salvando os dados
+
+def time_campeao():
+    #Dados simulados
+    np.random.seed(42)
+    n_amostras = 1000
+    #Caracteristicas
+    X = np.random.rand(n_amostras, 4)
+    y = (X[:, 0] + X[:, 1]> 1).atype(int)
+    #Conjuntos de treino e de teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    #Escalonamento dos dados
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    #Criação do modelo e treino
+    modelo = LogisticRegression()
+    modelo.fit(X_train_scaled, y_train)
+    #Previsão
+    predicoes = modelo.predict(X_test_scaled)
+    #Metricas
+    metricas = {
+        'Acuracia': accuracy_score(y_test, predicoes),
+        'Relatorio de Classificação': classification_report(y_test, predicoes)
+    }
+    #Salvando os dados
+    salvar_resultados(modelo, 'time_campeao', X_test, y_test, predicoes, metricas)
 
 #Executar todos os modelos
