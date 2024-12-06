@@ -1,0 +1,13 @@
+Modelo: resultado_jogo
+metricas de Desempemho:
+Acuracia: 0.335
+Relatorio de Classificação:               precision    recall  f1-score   support
+
+           0       0.33      0.29      0.31        65
+           1       0.33      0.39      0.36        70
+           2       0.34      0.32      0.33        65
+
+    accuracy                           0.34       200
+   macro avg       0.34      0.33      0.33       200
+weighted avg       0.34      0.34      0.33       200
+

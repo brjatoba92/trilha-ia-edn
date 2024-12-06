@@ -145,7 +145,7 @@ def modelo_cartao_vermelho():
 
     #Caracteristicas: agressividade, historico de faltas
     X = np.random.rand(n_amostras, 3)
-    y = (X[:, 0] > 0.7).atype(int) #Probabilidade de cartão vermelho
+    y = (X[:, 0] > 0.7).astype(int) #Probabilidade de cartão vermelho
     
     #Conjuntos de treino e de teste
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -178,13 +178,13 @@ Regressão usando Linear Regression
 Estima o valor de mercado de um jogador
 Considera idade, gols, assistências e tempo de jogo
 """
-def valor_mercado_jogador():
+def modelo_valor_mercado_jogador():
     
     #Dados simulados
     np.random.seed(42)
     n_amostras = 1000
     
-    #Caracteristicas
+    #Caracteristicas: Idade, gols, assistencias, tempo de jogo
     X = np.random.rand(n_amostras, 4)
     y = 50000 + 200000 * X[:,0] + 150000 * X[:, 1] + np.random.normal(0,50000,n_amostras)
 
@@ -204,10 +204,12 @@ def valor_mercado_jogador():
     predicoes = modelo.predict(X_test_scaled)
     
     #Metricas
+    
     metricas = {
         'MSE': mean_squared_error(y_test, predicoes),
         'R2': r2_score(y_test, predicoes)
     }
+    
     #Salvando os dados
     salvar_resultados(modelo, 'valor_mercado', X_test, y_test, predicoes, metricas)
 
@@ -218,30 +220,57 @@ Prevê a probabilidade de um time ser campeão
 Usa características como orçamento e histórico de títulos
 """
 
-def time_campeao():
+def modelo_time_campeao():
+    
     #Dados simulados
     np.random.seed(42)
     n_amostras = 1000
-    #Caracteristicas
+    
+    #Caracteristicas: Orçamento, historico de titulos, ranking
     X = np.random.rand(n_amostras, 4)
-    y = (X[:, 0] + X[:, 1]> 1).atype(int)
+    y = (X[:, 0] + X[:, 1]> 1).astype(int) #Probabilidade de ser campeão
+    
     #Conjuntos de treino e de teste
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
     #Escalonamento dos dados
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
+    
     #Criação do modelo e treino
     modelo = LogisticRegression()
     modelo.fit(X_train_scaled, y_train)
+    
     #Previsão
     predicoes = modelo.predict(X_test_scaled)
+    
     #Metricas
     metricas = {
         'Acuracia': accuracy_score(y_test, predicoes),
         'Relatorio de Classificação': classification_report(y_test, predicoes)
     }
+
     #Salvando os dados
     salvar_resultados(modelo, 'time_campeao', X_test, y_test, predicoes, metricas)
 
 #Executar todos os modelos
+def executar_modelos():
+    modelos = [
+        modelo_resultado_jogo,
+        modelo_numero_gols,
+        modelo_cartao_vermelho,
+        modelo_valor_mercado_jogador,
+        modelo_time_campeao
+    ]
+
+    resultados = {}
+    for modelo in modelos:
+        nome_modelo = modelo.__name__
+        print(f"Executando {nome_modelo} ...")
+        resultados[nome_modelo] = modelo()
+    
+    return resultados
+
+resultados = executar_modelos()
+print("Todos os modelos foram executados. Verifique a pasta 'resultados'")
