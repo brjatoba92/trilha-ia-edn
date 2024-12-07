@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import datetime as dt
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
@@ -45,5 +45,41 @@ class CarajasHomeCenterDataGenerator:
                 data['vendas_totais'][i] *= 1.5 #Maior volume para lojas grandes
         return data
 
- 
+class CarajasHomeCenterMLProject:
+    def __init__(self):
+        #Pasta para resultados
+        self.output_dir = f'resultado_ml_{dt.datetime.now().strftime("%Y%m%d_%H%M%S")}'
+        os.makedirs(self.output_dir, exist_ok=True)
+        #Gerar dados
+        data_generator = CarajasHomeCenterDataGenerator()
+        self.df = data_generator.generate_data()
+        self.df.to_csv(f'{self.output_dir}/dados_originais.csv', index=False)
+    def preparar_dados(self):
+        
+        #Separação de features e targets
+        X = self.df.drop(['vendas_total', 'probabilidade_inadimplencia', 'categoria_produto_mais_vendido'], axis=1) #todos menos as colunas deste array
+        y_regressao = self.df['vendas_total']
+        y_classificacao_inadimplencia = (self.df['probabilidade_inadimplencia']>0.15).astype(int)
+        y_categoria_produto_mais_vendido = self.df['categoria_produto_mais_vendido']
 
+        #Separando em dados categoricos e numericos
+        colunas_categoricas = ['regiao', 'tamanho_loja']
+        colunas_numericas = [
+            'loja_id', 'mes', 'ano', 
+            'temperatura', 'precipitação', 'dia_pagamento'
+        ]
+
+        #Preprocessamento
+        preprocessador = ColumnTransformer(
+            transformers=[
+                ('num', StandardScaler(), colunas_numericas)
+                ('cat', OneHotEncoder(), colunas_categoricas)
+            ]
+        )
+        return (
+            preprocessador,
+            X,
+            y_regressao,
+            y_classificacao_inadimplencia,
+            y_categoria_produto_mais_vendido
+        )
