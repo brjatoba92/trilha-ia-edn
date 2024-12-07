@@ -46,6 +46,21 @@ class CarajasHomeCenterDataGenerator:
         return data
 
 class CarajasHomeCenterMLProject:
+    """
+    Geração de Dados Sintéticos
+    Criei um gerador de dados realista simulando uma rede de lojas
+    Variáveis incluem: 
+    - ID da loja, 
+    - região
+    - tamanho da loja
+    - características temporais
+    - dados climáticos
+    Targets criados:
+    - Vendas totais (regressão)
+    - Probabilidade de inadimplência (classificação binária)
+    - Categoria de produto mais vendido
+    """
+    
     def __init__(self):
         #Pasta para resultados
         self.output_dir = f'resultado_ml_{dt.datetime.now().strftime("%Y%m%d_%H%M%S")}'
@@ -54,8 +69,8 @@ class CarajasHomeCenterMLProject:
         data_generator = CarajasHomeCenterDataGenerator()
         self.df = data_generator.generate_data()
         self.df.to_csv(f'{self.output_dir}/dados_originais.csv', index=False)
+    
     def preparar_dados(self):
-        
         #Separação de features e targets
         X = self.df.drop(['vendas_total', 'probabilidade_inadimplencia', 'categoria_produto_mais_vendido'], axis=1) #todos menos as colunas deste array
         y_regressao = self.df['vendas_total']
@@ -84,8 +99,15 @@ class CarajasHomeCenterMLProject:
             y_categoria_produto_mais_vendido
         )
     
+    #Modelos desenvolvidos
     def modelo_regressao_vendas(self, preprocessador, X, y):
-        #Modelos de Regressão
+        """
+        Modelos de Regressão:
+        Random Forest Regressor
+        Support Vector Regression (SVR)
+        Linear Regression
+        """
+        #Modelos
         modelos_regressao = {
             'Random Forest': RandomForestRegressor(n_estimators=100),
             'SVR': SVR(kernel='rbf'),
@@ -121,6 +143,7 @@ class CarajasHomeCenterMLProject:
                 'MAE': mae,
                 'R2': r2
             }
+
         #Salvar os dados
         with open (f'{self.output_dir}/resultados_regressao.txt', 'w') as f:
             for modelo, metricas in resultados_regressao.items():
@@ -128,3 +151,53 @@ class CarajasHomeCenterMLProject:
                 f.write(f"MSE: {metricas['MSE']}\n")
                 f.write(f"MAE: {metricas['MAE']}\n")
                 f.write(f"R2: {metricas['R2']}\n")
+        return resultados_regressao
+    
+    def modelo_classificacao_inadimplencia(self, preprocessador, X, y):
+        """
+        Modelos de Classificação:   
+        Logistic Regression
+        Gradient Boosting Classifier
+        """
+        #Modelo de classificação binaria
+        modelos_classificacao_binaria = {
+            'Logistic Regression': LogisticRegression(),
+            'Gradiente Boosting': GradientBoostingClassifier(n_estimators=100, random_state=42)
+        }
+
+        resultados_classificacao = {}
+
+        for nome, modelo in modelos_classificacao_binaria.items():
+            #Pipeline
+            pipeline = Pipeline([
+                ('preprocessador', preprocessador)
+                ('classificador', modelo)
+            ])
+            
+            #Divisão dos dados
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            
+            #Treinamento
+            pipeline.fit(X_train, y_train)
+            
+            #Predições
+            y_pred = pipeline.predict(X_test)
+            
+            #Metricas
+            accuracy = accuracy_score(y_test, y_pred)
+            rel_classificacao = classification_report(y_test, y_pred)
+            conf_matrix = confusion_matrix(y_test, y_pred)
+
+            #Resultados
+            resultados_classificacao[nome] = {
+                'Accuracy': accuracy,
+                'Classification Report': rel_classificacao,
+                'Confusion Matrix': conf_matrix
+            }
+        with open (f'{self.output_dir}/ resultados_classificacao.txt', 'w') as f:
+            for modelo, metricas in  resultados_classificacao.items():
+                f.write(f"Modelo: {modelo}\n")
+                f.write(f"Accuracy: {metricas['Accuracy']}\n")
+                f.write(f"Classification Report: {metricas['Classification Report']}\n")
+                f.write(metricas['Classification Report'], "\n\n")
+        return resultados_classificacao
