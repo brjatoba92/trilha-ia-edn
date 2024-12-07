@@ -201,3 +201,26 @@ class CarajasHomeCenterMLProject:
                 f.write(f"Classification Report: {metricas['Classification Report']}\n")
                 f.write(metricas['Classification Report'], "\n\n")
         return resultados_classificacao
+    
+    def visualizar_resultados(self, resultados_regressao, resultados_classificacao):
+        plt.figure(figsize=(12,5))
+
+        plt.subplot(1,2,1)
+        modelos_regressao = list(resultados_regressao.keys())
+        r2_scores = [res['R2'] for res in resultados_regressao.values()]
+        plt.bar(modelos_regressao, r2_scores)
+        plt.title('Comparação R2 - Modelos de Regressão')
+        plt.ylabel('R2 Score')
+        plt.xticks(rotation=45)
+
+        plt.subplot(1,2,1)
+        modelos_classificacao = list(resultados_classificacao.keys())
+        accuracies = [res['Accuracy'] for res in resultados_classificacao.values()]
+        plt.bar(modelos_classificacao, accuracies)
+        plt.title('Comparação Accuracy - Modelos de Classificação')
+        plt.ylabel('Accuracy')
+        plt.xticks(rotation=45)
+
+        plt.tight_layout()
+        plt.savefig(f'{self.output_dir}/comparacao_modelos.png')
+        plt.close()
