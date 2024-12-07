@@ -12,7 +12,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score, classification_report, confusion_matrix, r2_score
 
 #Geração de dados simulados realistas
 class CarajasHomeCenterDataGenerator:
@@ -83,3 +83,48 @@ class CarajasHomeCenterMLProject:
             y_classificacao_inadimplencia,
             y_categoria_produto_mais_vendido
         )
+    
+    def modelo_regressao_vendas(self, preprocessador, X, y):
+        #Modelos de Regressão
+        modelos_regressao = {
+            'Random Forest': RandomForestRegressor(n_estimators=100),
+            'SVR': SVR(kernel='rbf'),
+            'Linear Regression': LinearRegression()
+        }
+        resultados_regressao = {}
+
+        for nome, modelo in modelos_regressao.items():
+            
+            #Pipeline
+            pipeline = Pipeline([
+                ('preprocessador', preprocessador)
+                ('regressor', modelo)
+            ])
+            
+            #Divisão dos dados
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            
+            #Treinamento
+            pipeline.fit(X_train, y_train)
+            
+            #Predicoes
+            y_pred = pipeline.predict(X_test)
+            
+            #Metricas
+            mse = mean_squared_error(y_test, y_pred)
+            mae = mean_absolute_error(y_test, y_pred)
+            r2 = r2_score(y_test, y_pred)
+
+            #Resultados
+            resultados_regressao[nome] = {
+                'MSE': mse,
+                'MAE': mae,
+                'R2': r2
+            }
+        #Salvar os dados
+        with open (f'{self.output_dir}/resultados_regressao.txt', 'w') as f:
+            for modelo, metricas in resultados_regressao.items():
+                f.write(f"Modelo: {modelo}\n")
+                f.write(f"MSE: {metricas['MSE']}\n")
+                f.write(f"MAE: {metricas['MAE']}\n")
+                f.write(f"R2: {metricas['R2']}\n")
